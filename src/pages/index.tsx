@@ -1,4 +1,5 @@
 import {
+  Html,
   Image,
   Preload,
   Scroll,
@@ -18,20 +19,93 @@ const Shader = dynamic(() => import('@/components/canvas/Shader/Shader'), {
 })
 
 const MainBg = () => {
-  // const { width, height } = useThree((state) => state.viewport)
-  // const data = useScroll()
-  // const group = useRef<any>()
-  // useFrame(() => {
-  //   group.current.children[0].material.zoom = 1 + data.range(0, 1 / 3) / 3
-  // })
+  const { width, height } = useThree((state) => state.viewport)
+  const data = useScroll()
+  const mainBg = useRef<any>()
+  const introWrap = useRef<any>()
+  useFrame(() => {
+    if (introWrap?.current) {
+      // console.log(introWrap.current)
+      introWrap.current.style.opacity = 1 - data.range(0, 1 / 3)
+    }
+    if (mainBg?.current) {
+      // console.log(mainBg)
+      // bgImage.current.material.zoom = 1 + data.range(0, 1 / 3) / 3
+      // bgImage.current.material.uniforms.opacity = 1 - data.range(0, 1 / 3)
+      mainBg.current.style.opacity = 1 - data.range(0, 1 / 3)
+      mainBg.current.style.backgroundPositionY = `${
+        -data.range(0, 1 / 3) * 150
+      }px`
+      // bgImage.current.material.uniformsNeedUpdate = true
+      // bgImage.current.material.transparent = true
+      // bgImage.current.material.opacity = 0
+    }
+  })
   return (
     <group>
       <Suspense fallback={null}>
-        {/* @ts-ignore */}
-        <Image
-          scale={[17, 8, 1]}
-          url='https://digitalspecial.joongang.co.kr/_o/img/newsroom/2018/1011_deepsea/mainbg.jpg'
-        />
+        <Html center style={{ pointerEvents: 'none' }}>
+          <div
+            className='mainBg'
+            ref={mainBg}
+            style={{
+              width: '100vw',
+              height: '100vh',
+              top: 0,
+              left: 0,
+              backgroundImage:
+                "url('https://digitalspecial.joongang.co.kr/_o/img/newsroom/2018/1011_deepsea/mainbg.jpg')",
+              backgroundPositionX: 'center',
+              backgroundPositionY: '0px',
+              backgroundColor: '#082a62',
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              transformOrigin: 'center top',
+              transform: 'scale(1.2)',
+            }}
+          ></div>
+        </Html>
+        <Html
+          style={{
+            transform: 'translate3d(-50%, -78%, 0px)',
+            pointerEvents: 'none',
+          }}
+        >
+          <div className='introWrap' ref={introWrap}>
+            <h1
+              className='title'
+              style={{
+                width: '679px',
+                height: '135px',
+                background: `url("https://digitalspecial.joongang.co.kr/_o/img/newsroom/2018/1011_deepsea/title.png") 0 0 no-repeat`,
+              }}
+            ></h1>
+            <div style={{ height: '55px' }}></div>
+            <p
+              className='pc_item'
+              style={{
+                fontSize: '17px',
+                color: '#b5c7d0',
+                textAlign: 'center',
+              }}
+            >
+              안녕. 나는 코스타리카 해안에 사는 바다거북이야. 어디서 본 거
+              같다고?
+              <br></br>
+              맞아, 코에 12cm나 되는 플라스틱 빨대가 박혀 고생한 거북이.
+              <br></br>
+              유튜브에서 화제가 됐던 그 영상 주인공이 바로 나야.
+              <br></br>
+              <strong style={{ fontSize: '20px', color: 'white' }}>
+                내 덕(?)에 플라스틱 빨대가 얼마나 위험한지, 전 세계가 알게 됐대.
+              </strong>
+              <br></br>
+              아, 영상을 못 봐서 무슨 얘기인지 잘 모르겠다고?
+              <br></br>
+              그럼 지금부터 내가 하는 얘기를 잘 들어봐.
+            </p>
+          </div>
+        </Html>
       </Suspense>
     </group>
   )
@@ -41,74 +115,14 @@ const MainBg = () => {
 const DOM = () => {
   return (
     <>
-      <Canvas gl={{ antialias: false }} dpr={[1, 1.5]}>
-        <ScrollControls pages={6}>
+      <Canvas
+        style={{
+          backgroundImage: 'linear-gradient(#36558a, #010f15, #010f15)',
+        }}
+        gl={{ antialias: true }}
+      >
+        <ScrollControls pages={2} damping={6}>
           <MainBg />
-          <Scroll html>
-            <section
-              className='firstPage h-screen'
-              style={{
-                width: '100vw',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                textAlign: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <div
-                className='introWrap'
-                style={{
-                  display: 'flex',
-                  flex: 1,
-                  flexDirection: 'column',
-                  position: 'fixed',
-                  top: '22%',
-                }}
-              >
-                <h1
-                  className='title'
-                  style={{
-                    width: '679px',
-                    height: '135px',
-                    background: `url("https://digitalspecial.joongang.co.kr/_o/img/newsroom/2018/1011_deepsea/title.png") 0 0 no-repeat`,
-                  }}
-                ></h1>
-                <div style={{ height: '55px' }}></div>
-                <p
-                  className='pc_item'
-                  style={{ fontSize: '17px', color: '#b5c7d0' }}
-                >
-                  안녕. 나는 코스타리카 해안에 사는 바다거북이야. 어디서 본 거
-                  같다고?
-                  <br></br>
-                  맞아, 코에 12cm나 되는 플라스틱 빨대가 박혀 고생한 거북이.
-                  <br></br>
-                  유튜브에서 화제가 됐던 그 영상 주인공이 바로 나야.
-                  <br></br>
-                  <strong style={{ fontSize: '20px', color: 'white' }}>
-                    내 덕(?)에 플라스틱 빨대가 얼마나 위험한지, 전 세계가 알게
-                    됐대.
-                  </strong>
-                  <br></br>
-                  아, 영상을 못 봐서 무슨 얘기인지 잘 모르겠다고?
-                  <br></br>
-                  그럼 지금부터 내가 하는 얘기를 잘 들어봐.
-                </p>
-              </div>
-              {/* <div
-                className='mainBg'
-                style={{
-                  width: 'inherit',
-                  height: 'inherit',
-                  position: 'fixed',
-                  top: 0,
-                  background: `#082a62 url("https://digitalspecial.joongang.co.kr/_o/img/newsroom/2018/1011_deepsea/mainbg.jpg") center bottom / cover no-repeat`,
-                  zIndex: -1,
-                }}
-              ></div> */}
-            </section>
-          </Scroll>
           <Preload />
         </ScrollControls>
       </Canvas>
@@ -116,20 +130,9 @@ const DOM = () => {
   )
 }
 
-// canvas components goes here
-const R3F = () => {
-  return (
-    <>
-      <Shader />
-    </>
-  )
-}
-
 const Page = () => {
   return (
     <>
-      {/* @ts-ignore */}
-      {/* <R3F r3f /> */}
       <DOM />
     </>
   )
