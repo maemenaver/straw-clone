@@ -123,6 +123,74 @@ const DOM = () => {
       >
         <ScrollControls pages={2} damping={6}>
           <MainBg />
+          <Scroll>
+            <Html
+              style={{
+                transform: 'translate3d(-50%, -50%, 1111px)',
+                width: '100vw',
+                top: '100vh',
+                color: 'white',
+                textAlign: '-webkit-center',
+              }}
+            >
+              <div>
+                <h2 style={{ fontSize: '30px' }}>
+                  우선, 하나만 물어볼게. <br />
+                  <strong>일주일에 플라스틱 빨대를 몇 개 정도 써?</strong>
+                </h2>
+                <div
+                  className='addBtnWrap'
+                  style={{
+                    position: 'relative',
+                    background: '#14479a',
+                    width: '270px',
+                    height: '84px',
+                    borderRadius: '50px 0px 0px 50px',
+                    padding: '10px 50px 0px 50px',
+                    left: '-20px',
+                  }}
+                >
+                  <input
+                    id='numberInput'
+                    type='number'
+                    min={1}
+                    max={20}
+                    value={10}
+                    maxLength={2}
+                    placeholder='0'
+                    style={{
+                      overflow: 'hidden',
+                      fontSize: '40px',
+                      width: '240px',
+                      background: 'transparent',
+                      margin: 0,
+                      border: 0,
+                      outline: 0,
+                      verticalAlign: 'baseline',
+                      cursor: 'pointer',
+                    }}
+                  />
+                  <input
+                    className='addBtn'
+                    type='submit'
+                    value='확인'
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      right: '-42px',
+                      width: '84px',
+                      height: '84px',
+                      borderRadius: '50px',
+                      color: '#082a62',
+                      fontSize: '22px',
+                      fontWeight: 'bold',
+                      cursor: 'pointer',
+                    }}
+                  />
+                </div>
+              </div>
+            </Html>
+          </Scroll>
           <Preload />
         </ScrollControls>
       </Canvas>
